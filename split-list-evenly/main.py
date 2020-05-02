@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
+import logging
 
 def _which_is_smaller(l, r):
     sum_l = sum(l)
     sum_r = sum(r)
 
-    if sum_l > sum_r:
+    if sum_l < sum_r:
         return 'left'
 
-    if sum_l < sum_r:
+    if sum_l > sum_r:
         return 'right'
 
     return None
+
 
 def find_best_splits(items):
     assert len(items) >= 2, \
@@ -21,14 +23,13 @@ def find_best_splits(items):
     l = [] # left
     r = [] # right
 
-    # it's always safe to assume that either bucket
-
     while items:
-        print("\n".join((
+        logging.debug("\n".join((
             "l: {}".format(l),
             "r: {}".format(r),
             "items: {}".format(items),
         )))
+
         smaller = _which_is_smaller(l, r)
 
         # only one item left, it goes to the smaller bucket
@@ -59,11 +60,11 @@ def find_best_splits(items):
 def run_tests():
     test_data = (
         # input list, output list
-        ((1, 2, 3), (2)),
-        ((3, 2, 1), (1)),
-        ((1, 5, 3, 2, 4), (2, 3)),
-        ((1, 2, 4, 8, 16), (4)),
-        ((1, 1, 1, 1, 1), (2, 3)),
+        ((1, 2, 3), (2,)),
+        ((3, 2, 1), (1,)),
+        ((1, 5, 3, 2, 4), (2, 3,)),
+        ((1, 2, 4, 8, 16), (4,)),
+        ((1, 1, 1, 1, 1), (2, 3,)),
     )
 
     for (input_, exp_output_) in test_data:
@@ -76,4 +77,5 @@ def run_tests():
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.WARNING)
     run_tests()
